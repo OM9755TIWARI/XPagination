@@ -6,7 +6,7 @@ import axios from 'axios';
 function App() {
 const [employees, setEmployees] = useState([]);
 const [currentPage, setCurrentPage] = useState(1);
-const itemPerPage = 10;
+const itemsPerPage = 10;
 
 useEffect(() => {
   const fetchData = async() => {
@@ -23,15 +23,15 @@ useEffect(() => {
 
 
 
-const indexOfLastEmployee = currentPage * itemPerPage;
-const indexOfFirstEmployee = indexOfLastEmployee - itemPerPage;
+const indexOfLastEmployee = currentPage * itemsPerPage;
+const indexOfFirstEmployee = indexOfLastEmployee - itemsPerPage;
 const currentEmployees = employees.slice(
   indexOfFirstEmployee,
   indexOfLastEmployee
 );
 
 const nextPage = () => {
-  if(currentPage < Math.ceil(employees.length/ itemPerPage)){
+  if(currentPage < Math.ceil(employees.length/ itemsPerPage)){
     setCurrentPage(currentPage + 1);
   }
 };
@@ -56,7 +56,7 @@ const previousPage = () => {
         </thead>
         <tbody>
           {currentEmployees.map((employee, index) => (
-            <tr key = {index}>
+            <tr key = {employee.id}>
                 <td>{employee.id}</td>
                 <td>{employee.name}</td>
                 <td>{employee.email}</td>
@@ -68,11 +68,11 @@ const previousPage = () => {
         </tbody>
       </table>
           <div className='buttoncontainer'>
-            <button onClick={previousPage} disabled={currentPage === 1}>Previous</button>
+            <button onClick={previousPage} disabled={currentPage <= 1}>Previous</button>
             <button>{currentPage}</button>
             <button
               onClick = {nextPage}
-              disabled = {currentPage === Math.ceil(employees.length / itemPerPage)}
+              disabled = {currentPage >= Math.ceil(employees.length / itemsPerPage)}
             >
               Next
             </button>
